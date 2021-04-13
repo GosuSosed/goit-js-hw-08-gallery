@@ -1,25 +1,37 @@
-import images from './gallery-items.js';
-console.log(images);
+import galleryItems from './gallery-items.js';
+// console.log(galleryItems);
 
-const listRef = document.querySelector('.gallery');
-const createEl = createImagesMarkup(images);
-console.log(createEl);
-// listRef.insertAdjacentElement('beforeend', createEl);
+const refs = {
+  galleryContainer: document.querySelector('.js-gallery'),
+}
 
-function createImagesMarkup(array) {
-    return array.map( ({preview, original, description}) => { 
-    `<li class="gallery__item">
-      <a
-      class="gallery__link"
-      href="${original}"
+const createEl = createGalleryMarkup(galleryItems);
+refs.galleryContainer.insertAdjacentHTML('beforeend', createEl);
+
+function createGalleryMarkup (images) {
+  return images.map( ({preview, original, description}) => {
+    return `
+    <li class="gallery__item">
+      <a 
+       class="gallery__link" 
+       href="${original}"
       >
-        <img
-        class="gallery__image"
+        <img class="gallery__image"
         src="${preview}"
         data-source="${original}"
-        alt="${description}"
-        />
+        alt="${description}">
       </a>
     </li>
-    `}).join('');
-};
+    `
+  }).join('');
+}
+// Реализация делегирования на галерее ul.js-gallery и получение url большого изображения.
+refs.galleryContainer.addEventListener('click', onImageClick)
+
+function onImageClick (evt) {
+  evt.preventDefault();
+    if (evt.target.nodeName !== "IMG") { 
+    return;
+    }
+
+}
